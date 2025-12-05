@@ -434,6 +434,93 @@
 
     <!-- Mobile Menu JavaScript -->
     <script src="assets/js/mobile-menu.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("contactForm");
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById("contactName");
+        const email = document.getElementById("contactEmail");
+        const phone = document.getElementById("contactPhone");
+        const subject = document.getElementById("contactSubject");
+        const message = document.getElementById("contactMessage");
+
+        // Reset Borders
+        [name, email, phone, subject, message].forEach(field => {
+            field.style.border = "1px solid #ccc";
+        });
+
+        let valid = true;
+
+        // Name Validation
+        if (name.value.trim().length < 3) {
+            name.style.border = "1px solid red";
+            valid = false;
+        }
+
+        // Email Validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.value.trim())) {
+            email.style.border = "1px solid red";
+            valid = false;
+        }
+
+        // Phone Number Validation (10 digits)
+        const phoneRegex = /^[0-9]{10}$/;
+        let phoneValue = phone.value.trim().replace(/\D/g, ""); // remove non-digits
+        if (!phoneRegex.test(phoneValue)) {
+            phone.style.border = "1px solid red";
+            valid = false;
+        }
+
+        // Message Validation
+        if (message.value.trim().length < 5) {
+            message.style.border = "1px solid red";
+            valid = false;
+        }
+
+        if (!valid) {
+            alert("Please fill all required fields correctly.");
+            return;
+        }
+
+        // If everything is valid
+        const formData = {
+            name: name.value.trim(),
+            email: email.value.trim(),
+            mobile: phoneValue,
+            subject: subject.value.trim(),
+            message: message.value.trim()
+        };
+
+        try {
+            const response = await fetch('YOUR_API_ENDPOINT_URL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+                alert('Thank you! Your message has been sent.');
+                form.reset(); // Clear form
+            } else {
+                alert('Error sending message. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Network error. Please try again.');
+        }
+    });
+});
+</script>
+    <script src="assets/js/main.js"></script>
+
     <script src="assets/js/animations.js"></script>
 </body>
 </html>

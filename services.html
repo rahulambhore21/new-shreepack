@@ -415,5 +415,101 @@
     <!-- Mobile Menu JavaScript -->
     <script src="assets/js/mobile-menu.js"></script>
     <script src="assets/js/animations.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector(".quote-form");
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault(); // Stop form before validation
+
+        // Get fields
+        const name = form.querySelector('input[placeholder="Name"]');
+        const email = form.querySelector('input[placeholder="Email"]');
+        const movingTo = form.querySelector('input[placeholder="Moving To"]');
+        const movingFrom = form.querySelector('input[placeholder="Moving From"]');
+        const mobile = form.querySelector('input[placeholder="Mobile No"]');
+        const message = form.querySelector("textarea");
+
+        // Reset borders
+        [name, email, movingTo, movingFrom, mobile, message].forEach(field => {
+            field.style.border = "1px solid #ccc";
+        });
+
+        let isValid = true;
+
+        // Validations
+        if (name.value.trim().length < 3) {
+            name.style.border = "1px solid red";
+            isValid = false;
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email.value.trim())) {
+            email.style.border = "1px solid red";
+            isValid = false;
+        }
+
+        if (movingTo.value.trim().length < 2) {
+            movingTo.style.border = "1px solid red";
+            isValid = false;
+        }
+
+        if (movingFrom.value.trim().length < 2) {
+            movingFrom.style.border = "1px solid red";
+            isValid = false;
+        }
+
+        const mobilePattern = /^[0-9]{10}$/;
+        if (!mobilePattern.test(mobile.value.trim())) {
+            mobile.style.border = "1px solid red";
+            isValid = false;
+        }
+
+        if (message.value.trim().length < 5) {
+            message.style.border = "1px solid red";
+            isValid = false;
+        }
+
+        // Final result
+        if (!isValid) {
+            alert("Please fill all fields correctly.");
+            return;
+        }
+
+        const formData = {
+            name: name.value.trim(),
+            email: email.value.trim(),
+            mobile: mobile.value.trim(),
+            movingFrom: movingFrom.value.trim(),
+            movingTo: movingTo.value.trim(),
+            message: message.value.trim()
+        };
+
+        try {
+            const response = await fetch('YOUR_API_ENDPOINT_URL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+                alert('Thank you! Your quote request has been submitted.');
+                form.reset(); // Clear form
+            } else {
+                alert('Error sending quote request. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Network error. Please try again.');
+        }
+    });
+});
+</script>
+    <script src="assets/js/main.js"></script>
+
 </body>
 </html>

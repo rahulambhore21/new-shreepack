@@ -357,5 +357,106 @@
     <!-- Mobile Menu JavaScript -->
     <script src="assets/js/mobile-menu.js"></script>
     <script src="assets/js/animations.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("inquiryForm");
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        // Get fields
+        const name = document.getElementById("name");
+        const email = document.getElementById("email");
+        const phone = document.getElementById("phone");
+        const fromCity = document.getElementById("fromCity");
+        const toCity = document.getElementById("toCity");
+        const message = document.getElementById("message");
+
+        // Reset borders
+        [name, email, phone, fromCity, toCity, message].forEach(field => {
+            field.style.border = "1px solid #ddd";
+        });
+
+        let valid = true;
+
+        // Name
+        if (name.value.trim().length < 3) {
+            name.style.border = "1px solid red";
+            valid = false;
+        }
+
+        // Email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email.value.trim())) {
+            email.style.border = "1px solid red";
+            valid = false;
+        }
+
+        // Mobile number (10 digits India)
+        const phoneRegex = /^[0-9]{10}$/;
+        if (!phoneRegex.test(phone.value.trim())) {
+            phone.style.border = "1px solid red";
+            valid = false;
+        }
+
+        // From city
+        if (fromCity.value.trim().length < 2) {
+            fromCity.style.border = "1px solid red";
+            valid = false;
+        }
+
+        // To city
+        if (toCity.value.trim().length < 2) {
+            toCity.style.border = "1px solid red";
+            valid = false;
+        }
+
+        // Message
+        if (message.value.trim().length < 5) {
+            message.style.border = "1px solid red";
+            valid = false;
+        }
+
+        if (!valid) {
+            alert("Please fill all fields correctly.");
+            return;
+        }
+
+        // Success
+        const formData = {
+            name: name.value.trim(),
+            email: email.value.trim(),
+            mobile: phone.value.trim(),
+            movingFrom: fromCity.value.trim(),
+            movingTo: toCity.value.trim(),
+            message: message.value.trim()
+        };
+
+        try {
+            const response = await fetch('YOUR_API_ENDPOINT_URL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+            
+            if (response.ok) {
+                alert('Thank you! Your inquiry has been submitted.');
+                form.reset(); // Clear form
+            } else {
+                alert('Error sending inquiry. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Network error. Please try again.');
+        }
+    });
+});
+</script>
+    <script src="assets/js/main.js"></script>
+
 </body>
 </html>
