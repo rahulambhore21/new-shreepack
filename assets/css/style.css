@@ -2512,6 +2512,18 @@ img {
     --parallax-y: 0px;
 }
 
+/* Services background image */
+.services-bg-image {
+    position: absolute;
+    inset: 0;
+    background-image: url('../img/truck01.png');
+    background-size: contain;
+    background-position: center;
+    /* background-repeat: no-repeat; */
+    opacity: 0.8;
+    z-index: 0;
+    pointer-events: none;
+}
 
 /* India map background like How We Work */
 .services::before {
