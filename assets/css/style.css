@@ -2059,9 +2059,12 @@ img {
 
 .section-subtitle {
     text-align: center;
-    font-size: var(--fs-body);
-    color: var(--muted-grey);
+    font-size: var(--fs-subtitle);
+    color: white;
     max-width: 680px;
+    background-color: #3A444C;
+    border-radius: 10px;
+    padding: 7px 14px;
     margin: 0 auto var(--space-xl);
     line-height: 1.7;
 }
@@ -2584,7 +2587,7 @@ img {
 }
 
 .section-subtitle .highlight {
-    color: var(--muted-grey);
+    color: #0070BD;
     font-weight: inherit;
 }
 
